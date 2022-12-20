@@ -60,6 +60,17 @@ const game = (() => {
 
   }
 
+  const reset = () => {
+    playerOne.win = false;
+    playerTwo.win = false;
+    numMoves = 0;
+    gameArr = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ];
+  }
+
   const click = (row, col) => {
     if (gameArr[row][col] !== "") {
       return;
@@ -76,21 +87,15 @@ const game = (() => {
     checkCols();
     checkDiags();
 
-    if(playerOne.win){playerOne.score += 1;}
-    if(playerTwo.win){playerTwo.score += 1;}
+    if(playerOne.win){
+      playerOne.score += 1;
+    }
+    if(playerTwo.win){
+      playerTwo.score += 1;
+    }
   };
 
-  const reset = () => {
-    console.log("I'm resetting!");
-    playerOne.win = false;
-    playerTwo.win = false;
-    numMoves = 0;
-    gameArr = [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ]; 
-  }
+  
 
   return { playerOne, playerTwo, gameArr, click, reset };
 })();
@@ -109,16 +114,9 @@ const display = (() => {
     container.appendChild(cell);
   };
 
-  const checkWin = () => {
-    if (game.playerOne.win) {
-      dispScoreOne.textContent = game.playerOne.score;
-    } else if (game.playerTwo.win) {
-      dispScoreTwo.textContent = game.playerTwo.score;
-    } 
-  };
-
   const showGameState = () => {
-    console.log(game.gameArr);
+    dispScoreOne.textContent = game.playerOne.score;
+    dispScoreTwo.textContent = game.playerTwo.score;
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -132,7 +130,7 @@ const display = (() => {
     cells.forEach((div) => {
       div.addEventListener("click", () => {
         game.click(div.getAttribute("row"), div.getAttribute("col"));
-        checkWin();
+        console.log(game.gameArr);
         showGameState();
         
       });
