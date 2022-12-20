@@ -9,7 +9,7 @@ const game = (() => {
   const playerOne = playerFac("X");
   const playerTwo = playerFac("O");
   let numMoves = 0;
-  let gameArr = [
+  const gameArr = [
     ["", "", ""],
     ["", "", ""],
     ["", "", ""],
@@ -64,11 +64,11 @@ const game = (() => {
     playerOne.win = false;
     playerTwo.win = false;
     numMoves = 0;
-    gameArr = [
-      ["", "", ""],
-      ["", "", ""],
-      ["", "", ""],
-    ];
+    for (let i = 0; i < gameArr.length; i += 1) {
+      for (let j = 0; j < gameArr.length; j += 1) {
+        gameArr[i][j] = "";
+      }
+    };
   }
 
   const click = (row, col) => {
@@ -89,9 +89,12 @@ const game = (() => {
 
     if(playerOne.win){
       playerOne.score += 1;
+      reset();
+      console.log(gameArr);
     }
     if(playerTwo.win){
       playerTwo.score += 1;
+      reset();
     }
   };
 
@@ -104,6 +107,7 @@ const display = (() => {
   const container = document.querySelector("#container");
   const dispScoreOne = document.querySelector("#score-one");
   const dispScoreTwo = document.querySelector("#score-two");
+
 
   const addCell = (row, col) => {
     const cell = document.createElement("div");
