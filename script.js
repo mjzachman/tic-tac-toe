@@ -9,7 +9,7 @@ const game = (() => {
   const playerOne = playerFac("X");
   const playerTwo = playerFac("O");
   let numMoves = 0;
-  const gameArr = [
+  let gameArr = [
     ["", "", ""],
     ["", "", ""],
     ["", "", ""],
@@ -75,13 +75,30 @@ const game = (() => {
     checkRows();
     checkCols();
     checkDiags();
+
+    if(playerOne.win){playerOne.score += 1;}
+    if(playerTwo.win){playerTwo.score += 1;}
   };
 
-  return { playerOne, playerTwo, gameArr, click };
+  const reset = () => {
+    console.log("I'm resetting!");
+    playerOne.win = false;
+    playerTwo.win = false;
+    numMoves = 0;
+    gameArr = [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ]; 
+  }
+
+  return { playerOne, playerTwo, gameArr, click, reset };
 })();
 
 const display = (() => {
   const container = document.querySelector("#container");
+  const dispScoreOne = document.querySelector("#score-one");
+  const dispScoreTwo = document.querySelector("#score-two");
 
   const addCell = (row, col) => {
     const cell = document.createElement("div");
@@ -94,13 +111,14 @@ const display = (() => {
 
   const checkWin = () => {
     if (game.playerOne.win) {
-      console.log(`The winner is Player ${game.playerOne.symbol}`);
+      dispScoreOne.textContent = game.playerOne.score;
     } else if (game.playerTwo.win) {
-      console.log(`The winner is Player ${game.playerTwo.symbol}`);
-    }
+      dispScoreTwo.textContent = game.playerTwo.score;
+    } 
   };
 
   const showGameState = () => {
+    console.log(game.gameArr);
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -114,11 +132,14 @@ const display = (() => {
     cells.forEach((div) => {
       div.addEventListener("click", () => {
         game.click(div.getAttribute("row"), div.getAttribute("col"));
-        showGameState();
         checkWin();
+        showGameState();
+        
       });
     });
   };
+
+  
 
   return { showGameState };
 })();
