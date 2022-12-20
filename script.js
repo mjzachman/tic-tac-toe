@@ -68,7 +68,7 @@ const game = (() => {
       for (let j = 0; j < gameArr.length; j += 1) {
         gameArr[i][j] = "";
       }
-    };
+    }
   }
 
   const click = (row, col) => {
